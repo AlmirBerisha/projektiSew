@@ -10,6 +10,8 @@ function Kerkimi() {
         <select name="qyteti">
           <option value="koretin">Koretin</option>
           <option value="kamenica">Kamenica</option>
+          <option value="Gjilan">Gjilan</option>
+          
         </select>
         <select name="kategoria">
           <option value="it">IT</option>
