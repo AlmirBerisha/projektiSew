@@ -60,10 +60,6 @@ function Profili() {
     console.log("shpallja: ", shpalljaData);
   }, [shpalljaData]);
 
-  const hapShpalljen = (e) => {
-    setShpalljaKlikuar(e);
-  };
-
   if (!perdoruesiData) {
     return (
       <div>
@@ -74,6 +70,55 @@ function Profili() {
       </div>
     );
   }
+
+  const hapShpalljen = (shpallja) => {
+    setShpalljaKlikuar(shpallja);
+  };
+
+  const modifikoShpalljen = (e) => {
+    const { id, value } = e.target;
+    setShpalljaKlikuar({
+      ...shpalljaKlikuar,
+      [id]: value,
+    });
+  };
+
+  const fshijShpalljen = async (id) => {
+    try {
+      const confirmed = window.confirm(
+        "A jeni i sigurt qe doni ta fshini shpalljen?",
+      );
+
+      if (confirmed) {
+        await axios.delete(`http://localhost:3000/api/shpallja/${id}`);
+
+        setShpalljaData(shpalljaData.filter((sh) => sh._id !== id));
+        setShpalljaKlikuar(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const ruajNdryshimet = async () => {
+    try {
+      await axios.put(
+        `http://localhost:3000/api/shpallja/${shpalljaKlikuar._id}`,
+        shpalljaKlikuar,
+      );
+
+      setShpalljaData(
+        shpalljaData.map((sh) =>
+          sh._id === shpalljaKlikuar._id ? shpalljaKlikuar : sh,
+        ),
+      );
+
+      alert("Ndryshimet u ruajten");
+      setShpalljaKlikuar(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="">
@@ -107,10 +152,53 @@ function Profili() {
 
       {shpalljaKlikuar && (
         <div className="border absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-xl">
-          <p>Pozita e punes: {shpalljaKlikuar.pozitaPunes}</p>
-          <p>Lokacioni: {shpalljaKlikuar.lokacioniPunes}</p>
-          <p>Niveli: {shpalljaKlikuar.niveliPunes}</p>
-          <p>Pershkrimi: {shpalljaKlikuar.pershkrimiPunes}</p>
+          <label htmlFor="pozitaPunes">Pozita e punes:</label>
+          <input
+            id="pozitaPunes"
+            type="text"
+            value={shpalljaKlikuar.pozitaPunes || ""}
+            onChange={modifikoShpalljen}
+            className="border"
+          />
+          <label htmlFor="lokacioniPunes">Lokacioni i punes:</label>
+          <input
+            id="lokacioniPunes"
+            type="text"
+            value={shpalljaKlikuar.lokacioniPunes || ""}
+            onChange={modifikoShpalljen}
+            className="border"
+          />
+
+          <label htmlFor="niveliPunes">Niveli i punes:</label>
+          <input
+            id="niveliPunes"
+            type="text"
+            value={shpalljaKlikuar.niveliPunes || ""}
+            onChange={modifikoShpalljen}
+            className="border"
+          />
+          <label htmlFor="pershkrimiPunes">Pershkrimi i punes:</label>
+          <textarea
+            id="pershkrimiPunes"
+            type="text"
+            value={shpalljaKlikuar.pershkrimiPunes || ""}
+            onChange={modifikoShpalljen}
+            className="border"
+          />
+          <button
+            type="button"
+            className="publikoPune bg-red-500! cursor-pointer"
+            onClick={() => fshijShpalljen(shpalljaKlikuar._id)}
+          >
+            Fshij Shpalljen
+          </button>
+          <button
+            type="button"
+            className="publikoPune cursor-pointer"
+            onClick={ruajNdryshimet}
+          >
+            Perfundo
+          </button>
         </div>
       )}
     </div>
