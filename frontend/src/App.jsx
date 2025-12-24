@@ -9,6 +9,7 @@ import Regjistrimi from "./components/Regjistrimi";
 import PublikoPune from "./components/PublikoPune";
 import Shpallja from "./components/Shpallja";
 import Profili from "./components/Profili";
+import VerifikoEmail from "./components/VerifikoEmail";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/publikoPune" element={<PublikoPune />} />
         <Route path="/shpallja/:id" element={<Shpallja />} />
         <Route path="/profili/:id" element={<Profili />} />
+        <Route path="/verifikoemail" element={<VerifikoEmail />} />
       </Routes>
     </BrowserRouter>
   );
