@@ -68,8 +68,35 @@ function Kerkimi() {
               <option value="" hidden>
                 Qyteti
               </option>
-              <option value="Koretin">Koretin</option>
-              <option value="Kamenica">Kamenica</option>
+              <option value="Decan">Decan</option>
+              <option value="Drenas">Drenas</option>
+              <option value="Gjakove">Gjakove</option>
+              <option value="Gjilan">Gjilan</option>
+              <option value="Dragash">Dragash</option>
+              <option value="Kacanik">Kacanik</option>
+              <option value="Kline">kline</option>
+              <option value="Fushe Kosove">Fushe Kosove</option>
+              <option value="Kamenice">Kamenice</option>
+              <option value="Mitrovica">Mitrovica</option>
+              <option value="Lipjan">Lipjan</option>
+              <option value="Obiliq">Obiliq</option>
+              <option value="Rahovec">Rahovec</option>
+              <option value="Peje">Peje</option>
+              <option value="Podujeve">Podujeve</option>
+              <option value="Prishtine">Prishtine</option>
+              <option value="Prizren">Prizren</option>
+              <option value="Skenderaj">Skenderaj</option>
+              <option value="Shtime">Shtime</option>
+              <option value="Suhareke">Suhareke</option>
+              <option value="Ferizaj">Ferizaj</option>
+              <option value="Viti">Viti</option>
+		          <option value="Vushtrri">Vushtrri</option>
+		          <option value="Malisheve">Malisheve</option>
+		          <option value="Junik">Junik</option>
+		          <option value="Hani I Elezit">Hani I Elezit</option>
+		          <option value="Viti">Viti</option>
+              
+
             </select>
           </div>
 
@@ -86,8 +113,36 @@ function Kerkimi() {
               <option value="" hidden>
                 Kategoria
               </option>
-              <option value="it">IT</option>
-              <option value="administrate">Administrate</option>
+              <option value="industria">Industria</option>
+              <option value="administrate">Administratë</option>
+              <option value="agrikulture-industri-ushqimore">Agrikulturë dhe Industri Ushqimore</option>
+              <option value="arkitekture">Arkitekturë</option>
+              <option value="banka">Banka</option>
+              <option value="retail-distribuim">Retail dhe Distribuim</option>
+              <option value="ndertimtari-patundshmeri">Ndërtimtari & Patundshmëri</option>
+              <option value="mbeshtetje-konsumatoreve-call-center">Mbështetje e Konsumatorëve, Call Center</option>
+              <option value="ekonomi-finance-kontabilitet">Ekonomi, Financë, Kontabilitet</option>
+              <option value="edukim-shkence-hulumtim">Edukim, Shkencë & Hulumtim</option>
+              <option value="pune-te-pergjithshme">Punë të Përgjithshme</option>
+              <option value="burime-njerezore">Burime Njerëzore</option>
+              <option value="teknologji-informacioni">Teknologji e Informacionit</option>
+              <option value="sigurim">Sigurim</option>
+              <option value="gazetari-shtyp-media">Gazetari, Shtyp & Media</option>
+              <option value="ligj-legjislacion">Ligj & Legjislacion</option>
+              <option value="menaxhment">Menaxhment</option>
+              <option value="marketing-reklamim-pr">Marketing, Reklamim & PR</option>
+              <option value="inxhinieri">Inxhinieri</option>
+              <option value="shendetesi-medicine">Shëndetësi, Medicinë</option>
+              <option value="Prodhim">Prodhim</option>
+              <option value="Siguri$Mbrojtje">Siguri&Mbrojtje</option>
+              <option value="Industri te sherbimit">Industri te sherbimit</option>
+              <option value="Telekomunikim">Telekomunikim</option>
+              <option value="Tekstil, Lekure, Industri Veshembathje">Tekstil, Lekure, Industri Veshembathje</option>
+              <option value="Gastronomi, Hoteleri, Turizem">Gastronomi, Hoteleri, Turizem</option>
+              <option value="Transport, Logjistike">Transport, Logjistike</option>
+              
+              
+
             </select>
           </div>
           <button
