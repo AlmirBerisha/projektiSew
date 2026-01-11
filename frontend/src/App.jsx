@@ -12,14 +12,35 @@ import Profili from "./components/Profili";
 import VerifikoEmail from "./components/VerifikoEmail";
 import Aplikimi from "./components/Aplikimi";
 import Footeri from "./components/Footeri";
+import MenaxhoShpalljet from "./components/MenaxhoShpalljet";
+import KonfigurimetLlogarise from "./components/KonfigurimetLlogarise";
+import { useEffect, useState } from "react";
+import BallinaMysafir from "./components/BallinaMysafir";
 
 function App() {
+  const [eshteKycur, setEshteKycur] = useState(false);
+
+  useEffect(() => {
+    const checkKycja = () => {
+      if (localStorage.getItem("user")) {
+        setEshteKycur(true);
+      } else {
+        setEshteKycur(false);
+      }
+    };
+
+    checkKycja();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <BrowserRouter>
         <div className="flex-grow">
           <Routes>
-            <Route path="/" element={<Ballina />} />
+            <Route
+              path="/"
+              element={eshteKycur ? <Ballina /> : <BallinaMysafir />}
+            />
             <Route path="/listaPuneve" element={<ListaPuneve />} />
             <Route path="/listaKompanive" element={<ListaKompanive />} />
             <Route path="/rrethNesh" element={<RrethNesh />} />
@@ -28,6 +49,14 @@ function App() {
             <Route path="/publikoPune" element={<PublikoPune />} />
             <Route path="/shpallja/:id" element={<Shpallja />} />
             <Route path="/profili/:id" element={<Profili />} />
+            <Route
+              path="/profili/:id/menaxhoShpalljet"
+              element={<MenaxhoShpalljet />}
+            />
+            <Route
+              path="/profili/:id/konfigurimet"
+              element={<KonfigurimetLlogarise />}
+            />
             <Route path="/verifiko" element={<VerifikoEmail />} />
             <Route path=":id/aplikimi" element={<Aplikimi />} />
           </Routes>
@@ -39,4 +68,3 @@ function App() {
 }
 
 export default App;
-

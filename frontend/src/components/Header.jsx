@@ -170,6 +170,14 @@ function Header() {
                     Profili
                   </Link>
                   <hr className="my-2 border-gray-200" />
+                  <Link to={`/profili/${perdoruesiData._id}/menaxhoShpalljet`}>
+                    Menaxho Punet
+                  </Link>
+                  <hr className="my-2 border-gray-200" />
+                  <Link to={`/profili/${perdoruesiData._id}/konfigurimet`}>
+                    Konfigurimet e Llogarise
+                  </Link>
+                  <hr className="my-2 border-gray-200" />
                   <button
                     type="button"
                     className="w-full text-left flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
