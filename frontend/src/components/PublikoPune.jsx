@@ -82,7 +82,7 @@ function PublikoPune() {
         if (response.data.success) {
           setFormData({
             ...formData,
-            emailKompanise: response.data.userResponse.email,
+            emailKompanise: response.data.perdoruesiObj.email,
           });
         }
       } catch (error) {
