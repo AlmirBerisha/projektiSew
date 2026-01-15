@@ -196,7 +196,7 @@ function PublikoPune() {
                       })
                     }
                   >
-                    <option value=""hidden disabled>
+                    <option value="" hidden disabled>
                       Kategoria
                     </option>
                     <option value="industria">Industria</option>
@@ -272,7 +272,7 @@ function PublikoPune() {
                       setFormData({ ...formData, niveliPunes: e.target.value })
                     }
                   >
-                    <option value=""hidden disabled>
+                    <option value="" disabled hidden>
                       Zgjedh Nivelin
                     </option>
                     <option value="Praktike">Praktikë</option>
@@ -403,7 +403,9 @@ function PublikoPune() {
                     setFormData({ ...formData, lokacioniPunes: e.target.value })
                   }
                 >
-                  <option value=""hidden disabled>Lokacioni</option>
+                  <option value="" hidden disabled>
+                    Lokacioni
+                  </option>
                   <option value="Prishtine">Prishtinë</option>
                   <option value="Prizren">Prizren</option>
                   <option value="Peje">Pejë</option>
@@ -447,7 +449,7 @@ function PublikoPune() {
                     setFormData({ ...formData, eksperienca: e.target.value })
                   }
                 >
-                  <option value="" disabled>
+                  <option value="" hidden disabled>
                     Eksperienca
                   </option>
                   <option value="0-6 muaj">0-6 muaj</option>
