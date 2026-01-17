@@ -4,40 +4,28 @@ import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ArrowDownWideNarrow,
-  Mail,
-  X,
-  User,
-  BriefcaseBusiness,
-  FileText,
-  MapPin,
   Calendar,
+  MapPin,
   Building,
+  X,
 } from "lucide-react";
 import {
   faSearch,
   faEllipsisVertical,
   faPencil,
-  faTrash,
   faCheck,
-  faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 
 function MenaxhoAplikimet() {
   const [perdoruesiData, setPerdoruesiData] = useState({});
   const [shpalljaData, setShpalljaData] = useState([]);
-  const [shpalljaKlikuar, setShpalljaKlikuar] = useState(null);
+  const [aplikimet, setAplikimet] = useState([]);
+  const [aplikimiKlikuar, setAplikimiKlikuar] = useState(null);
   const [filtrimiFaqes, setFiltrimiFaqes] = useState("Active");
   const [kerko, setKerko] = useState("");
   const [shfaqMeny, setShfaqMeny] = useState(null);
   const [menyRadhitjes, setMenyRadhitjes] = useState(false);
   const [sortimiDates, setSortimiDates] = useState("teRejat");
-
-  // Applicants related state
-  const [aplikimet, setAplikimet] = useState([]);
-  const [aplikimiKlikuar, setAplikimiKlikuar] = useState(null);
-  const [shfaqPopupAplikanteve, setShfaqPopupAplikanteve] = useState(false);
-  const [shpalljaZgjedhurPerAplikante, setShpalljaZgjedhurPerAplikante] =
-    useState(null);
 
   const { id } = useParams();
 
@@ -66,18 +54,18 @@ function MenaxhoAplikimet() {
         );
         if (Array.isArray(response.data.data)) {
           const aplikimetFiltruara = response.data.data.filter((aplikimi) => {
-            return aplikimi.emailKompanise === perdoruesiData.email;
+            return aplikimi.emailAplikantit === perdoruesiData.email;
           });
-          if (aplikimetFiltruara.length > 0) {
-            setAplikimet(aplikimetFiltruara);
-          }
+          setAplikimet(aplikimetFiltruara);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchData();
+    if (perdoruesiData.email) {
+      fetchData();
+    }
   }, [perdoruesiData.email]);
 
   useEffect(() => {
@@ -99,7 +87,9 @@ function MenaxhoAplikimet() {
       setShpalljaData(shpalljet);
     };
 
-    fetchData();
+    if (aplikimet.length > 0) {
+      fetchData();
+    }
   }, [aplikimet]);
 
   const modifikoAplikimin = (e) => {
@@ -138,12 +128,16 @@ function MenaxhoAplikimet() {
   };
 
   const sortimDates = (data) => {
-    const sorted = [...data].sort((a, b) => {
+    return [...data].sort((a, b) => {
       const dateA = new Date(a.dataKrijimit);
       const dateB = new Date(b.dataKrijimit);
-      return sortimiDates === "teRejat" ? dateB - dateA : dateA - dateB;
+
+      if (sortimiDates === "teRejat") {
+        return dateB - dateA;
+      } else {
+        return dateA - dateB;
+      }
     });
-    return sorted;
   };
 
   // const filteredData = sortimDates(
@@ -163,7 +157,7 @@ function MenaxhoAplikimet() {
             Menaxho Aplikimet
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Menaxho dhe modifiko shpalljet e pozitave të punës
+            Menaxho dhe modifiko aplikimet e tua për pozita pune
           </p>
         </div>
 
@@ -192,7 +186,7 @@ function MenaxhoAplikimet() {
               />
               <input
                 type="text"
-                placeholder="Search shpalljet..."
+                placeholder="Kërko aplikime..."
                 value={kerko}
                 onChange={(e) => setKerko(e.target.value)}
                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-full"
@@ -250,9 +244,7 @@ function MenaxhoAplikimet() {
           </div>
         </div>
 
-        {/* Responsive Table */}
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-          {/* Desktop Table */}
+        <div className="bg-white border border-gray-200 rounded-lg overflow-visible">
           <div className="hidden lg:block">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -261,7 +253,7 @@ function MenaxhoAplikimet() {
                     Pozita
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Data e Publikimit
+                    Data e Aplikimit
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Lokacioni
@@ -270,7 +262,7 @@ function MenaxhoAplikimet() {
                     Orari
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Aplikimet
+                    Statusi
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Veprime
@@ -339,10 +331,58 @@ function MenaxhoAplikimet() {
                             </button>
                           </div>
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {shpallja?.lokacioniPunes || "N/A"}
+                      </td>
+                      <td className="py-4 whitespace-nowrap">
+                        <span className="py-1 w-full items-center justify-center inline-flex text-sm font-medium">
+                          {shpallja?.orari || "N/A"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {/* TODO: Statusin Ne pritje apo Refuzuar */}
+                        <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                          Në pritje
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="relative">
+                          <button
+                            onClick={() =>
+                              setShfaqMeny(
+                                shfaqMeny === aplikimi._id
+                                  ? null
+                                  : aplikimi._id,
+                              )
+                            }
+                            className="text-gray-400 hover:text-gray-600 p-2"
+                          >
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                          </button>
+
+                          {shfaqMeny === aplikimi._id && (
+                            <div className="absolute right-6 top-0 max-w-48 bg-white rounded-lg shadow-lg border border-gray-200  z-10">
+                              <button
+                                onClick={() => {
+                                  setAplikimiKlikuar(aplikimi);
+                                  setShfaqMeny(null);
+                                }}
+                                className="w-full text-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 rounded-t-lg"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPencil}
+                                  className="text-sm"
+                                />
+                                <span>Modifiko</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -438,7 +478,7 @@ function MenaxhoAplikimet() {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg w-fit overflow-y-auto shadow-xl">
             <div className="bg-[#f8f8f9] p-6 flex justify-between items-center">
-              <h2 className="text-xl font-bold">Modifiko Shpalljen</h2>
+              <h2 className="text-xl font-bold">Modifiko Aplikimin</h2>
               <button
                 onClick={() => setAplikimiKlikuar(null)}
                 className="cursor-pointer text-xl hover:text-gray-700"
@@ -480,7 +520,7 @@ function MenaxhoAplikimet() {
                       value={aplikimiKlikuar.mbiemriAplikantit || ""}
                       onChange={modifikoAplikimin}
                       className="input-ShpalljaProfil"
-                      placeholder="Full-time"
+                      placeholder="Sheno Mbiemrin"
                     />
                   </div>
                 </div>
@@ -536,14 +576,11 @@ function MenaxhoAplikimet() {
                 {/*   /> */}
                 {/* </div> */}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-1 gap-6 w-full">
                   <button
                     type="button"
                     className="publikoPune bg-red-500 cursor-pointer"
                   >
-                    Fshij Shpalljen
-                  </button>
-                  <button type="submit" className="publikoPune cursor-pointer">
                     Perfundo
                   </button>
                 </div>
