@@ -17,12 +17,11 @@ import MenaxhoShpalljet from "./components/MenaxhoShpalljet";
 import KonfigurimetLlogarise from "./components/KonfigurimetLlogarise";
 import BallinaMysafir from "./components/BallinaMysafir";
 import Perdoruesi from "./PerdoruesiContext";
-import ProfiliVizitor from "./components/ProfiliVizitor"
-import LlogaritPagen from "./components/LlogaritPagen";
 import MenaxhoAplikimet from "./components/MenaxhoAplikimet";
 import PunetRuajtura from "./components/PunetRuajtura";
 import { useEffect, useState } from "react";
-
+import ProfiliVizitor from "./components/ProfiliVizitor";
+import LlogaritPagen from "./components/LlogaritPagen";
 
 function App() {
   const { perdoruesiData } = Perdoruesi.usePerdoruesi();
@@ -84,8 +83,6 @@ function App() {
               element={<PunetRuajtura />}
             />
             <Route path="/kompania/:id" element={<ProfiliVizitor />} />
-
-            {}
             <Route path="/llogaritpagen" element={<LlogaritPagen />} />
           </Routes>
         </div>
