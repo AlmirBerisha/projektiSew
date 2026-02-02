@@ -12,7 +12,7 @@ import Header from "./Header";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const ListaKompanive = () => {
+const ProfiliKompaniseVizitor = () => {
   const { id } = useParams();
   const [kompania, setKompanite] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -204,28 +204,16 @@ const ListaKompanive = () => {
     );
   };
 
-  // Renderimi kryesor
   return (
     <div className="flex flex-col items-center min-h-screen">
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 md:p-8 rounded:lg ">
         <div className="max-w-6xl mx-auto">
-          {/* Header i listës */}
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 mt-10">
-              Lista e Kompanive
-            </h1>
-            <p className="text-gray-600">
-              Eksploroni kompanitë partner dhe mundësitë e punësimit
-            </p>
-          </div>
-
-          {/* Kontroll për loading/error */}
           {loading && (
             <div className="flex justify-center items-center h-64">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Duke ngarkuar kompanitë...</p>
+                <p className="text-gray-600">Duke ngarkuar...</p>
               </div>
             </div>
           )}
@@ -236,7 +224,6 @@ const ListaKompanive = () => {
             </div>
           )}
 
-          {/* Lista e kompanive */}
           {!loading && !error && (
             <div>
               {kompania ? (
@@ -254,5 +241,4 @@ const ListaKompanive = () => {
   );
 };
 
-export default ListaKompanive;
-
+export default ProfiliKompaniseVizitor;
