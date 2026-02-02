@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Header from "./Header";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,15 +34,14 @@ function MenaxhoShpalljet() {
   const [menyRadhitjes, setMenyRadhitjes] = useState(false);
   const [sortimiDates, setSortimiDates] = useState("teRejat");
 
-<<<<<<< HEAD
-=======
-  // Applicants related state
->>>>>>> 4176ce8 (test)
   const [aplikimet, setAplikimet] = useState([]);
   const [aplikimiKlikuar, setAplikimiKlikuar] = useState(null);
   const [shfaqPopupAplikanteve, setShfaqPopupAplikanteve] = useState(false);
   const [shpalljaZgjedhurPerAplikante, setShpalljaZgjedhurPerAplikante] =
     useState(null);
+
+  // State per foto te aplikanteve
+  const [fotoAplikanteve, setFotoAplikanteve] = useState({});
 
   const { id } = useParams();
 
@@ -101,6 +101,9 @@ function MenaxhoShpalljet() {
         if (response.data.success) {
           console.log("Aplikimet data:", response.data.aplikimet);
           setAplikimet(response.data.aplikimet);
+
+          // Ngarko fotot e aplikanteve
+          await ngarkoFotoAplikanteve(response.data.aplikimet);
         }
       } catch (error) {
         console.error(error);
@@ -110,6 +113,35 @@ function MenaxhoShpalljet() {
 
     fetchData();
   }, [shpalljaZgjedhurPerAplikante]);
+
+  // Funksion per te ngarkuar fotot e aplikanteve
+  const ngarkoFotoAplikanteve = async (aplikimet) => {
+    const fotot = {};
+
+    for (const aplikimi of aplikimet) {
+      try {
+        // Kerko perdoruesin sipas email-it
+        const response = await axios.get(
+          `http://localhost:3000/api/profili/email/${aplikimi.emailAplikantit}`,
+        );
+
+        if (response.data.success && response.data.data) {
+          const perdoruesiId = response.data.data._id;
+
+          // Kontrollo nese perdoruesi ka foto dhe foto.data (buffer)
+          if (response.data.data.foto && response.data.data.foto.data) {
+            fotot[aplikimi.emailAplikantit] =
+              `http://localhost:3000/api/profili/${perdoruesiId}/foto?t=${Date.now()}`;
+          }
+        }
+      } catch (error) {
+        // Nese nuk gjendet perdoruesi ose foto, vazhdo me te tjeret
+        console.log(`Foto nuk u gjet per: ${aplikimi.emailAplikantit}`);
+      }
+    }
+
+    setFotoAplikanteve(fotot);
+  };
 
   const modifikoShpalljen = (e) => {
     const { id, value } = e.target;
@@ -154,6 +186,20 @@ function MenaxhoShpalljet() {
     }
   };
 
+  const ruajNdryshimetAplikimit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(
+        `http://localhost:3000/api/shpallja/aplikimi/${aplikimiKlikuar._id}`,
+        aplikimiKlikuar,
+      );
+      alert("Ndryshimet u ruajten");
+      setAplikimiKlikuar(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const shfaqAplikantPopup = (e, shpallja) => {
     e.stopPropagation();
     setShpalljaZgjedhurPerAplikante(shpallja);
@@ -165,6 +211,7 @@ function MenaxhoShpalljet() {
     setShfaqPopupAplikanteve(false);
     setShpalljaZgjedhurPerAplikante(null);
     setAplikimiKlikuar(null);
+    setFotoAplikanteve({});
   };
 
   const hapAplikimin = (aplikimi) => {
@@ -174,6 +221,14 @@ function MenaxhoShpalljet() {
   const mbyllAplikimin = () => {
     setAplikimiKlikuar(null);
   };
+
+  // const modifikoAplikimin = (e) => {
+  //   const { id, value } = e.target;
+  //   setAplikimiKlikuar({
+  //     ...aplikimiKlikuar,
+  //     [id]: value,
+  //   });
+  // };
 
   const sortimDates = (data) => {
     const sorted = [...data].sort((a, b) => {
@@ -193,7 +248,6 @@ function MenaxhoShpalljet() {
     }),
   );
 
-<<<<<<< HEAD
   const handleDownloadCv = async (aplikimiId, filename) => {
     try {
       window.open(
@@ -205,29 +259,20 @@ function MenaxhoShpalljet() {
     }
   };
 
-=======
->>>>>>> 4176ce8 (test)
   return (
     <div className="bg-white min-h-screen">
+      <Header />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-gray-900">
             Menaxho Shpalljet
           </h1>
-<<<<<<< HEAD
           <p className="paragraf mt-1">
-=======
-          <p className="text-sm text-gray-500 mt-1">
->>>>>>> 4176ce8 (test)
             Menaxho dhe modifiko shpalljet e pozitave të punës
           </p>
         </div>
 
-<<<<<<< HEAD
         <div className="tabela">
-=======
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-6 border-b border-gray-200 gap-4">
->>>>>>> 4176ce8 (test)
           <div className="flex space-x-8 overflow-x-auto pb-2 lg:pb-4">
             {["Active", "Expired"].map((faqja) => (
               <button
@@ -255,11 +300,7 @@ function MenaxhoShpalljet() {
                 placeholder="Search shpalljet..."
                 value={kerko}
                 onChange={(e) => setKerko(e.target.value)}
-<<<<<<< HEAD
                 className="input-kerkimi"
-=======
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent w-full"
->>>>>>> 4176ce8 (test)
               />
             </div>
             <div className="relative">
@@ -282,11 +323,7 @@ function MenaxhoShpalljet() {
                         setSortimiDates("teRejat");
                         setMenyRadhitjes(false);
                       }}
-<<<<<<< HEAD
                       className="butonSortimi"
-=======
-                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center justify-between"
->>>>>>> 4176ce8 (test)
                     >
                       <span>Më e re</span>
                       {sortimiDates === "teRejat" && (
@@ -301,11 +338,7 @@ function MenaxhoShpalljet() {
                         setSortimiDates("teVjetrat");
                         setMenyRadhitjes(false);
                       }}
-<<<<<<< HEAD
                       className="butonSortimi"
-=======
-                      className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded flex items-center justify-between"
->>>>>>> 4176ce8 (test)
                     >
                       <span>Më e vjetër</span>
                       {sortimiDates === "teVjetrat" && (
@@ -322,44 +355,17 @@ function MenaxhoShpalljet() {
           </div>
         </div>
 
-<<<<<<< HEAD
         <div className="bg-white border border-gray-200 rounded-lg overflow-visible">
-=======
-        {/* Responsive Table */}
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-          {/* Desktop Table */}
->>>>>>> 4176ce8 (test)
           <div className="hidden lg:block">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-<<<<<<< HEAD
                   <th className="tableHead">Pozita</th>
                   <th className="tableHead">Data e Publikimit</th>
                   <th className="tableHead">Lokacioni</th>
                   <th className="tableHead text-center">Orari</th>
                   <th className="tableHead">Aplikimet</th>
                   <th className="tableHead text-right">Veprime</th>
-=======
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Pozita
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Data e Publikimit
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Lokacioni
-                  </th>
-                  <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Orari
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Aplikimet
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Veprime
-                  </th>
->>>>>>> 4176ce8 (test)
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -373,37 +379,22 @@ function MenaxhoShpalljet() {
                         {sh.kategoriaPunes}
                       </div>
                     </td>
-<<<<<<< HEAD
                     <td className="tableData text-gray-500">
-=======
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
->>>>>>> 4176ce8 (test)
                       {new Date(sh.dataKrijimit).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
                         year: "numeric",
                       })}
                     </td>
-<<<<<<< HEAD
                     <td className="tableData text-gray-900">
                       {sh.lokacioniPunes}
                     </td>
                     <td className="tableData">
-=======
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {sh.lokacioniPunes}
-                    </td>
-                    <td className="py-4 whitespace-nowrap">
->>>>>>> 4176ce8 (test)
                       <span className="py-1 w-full items-center justify-center inline-flex text-sm font-medium">
                         {sh.orari}
                       </span>
                     </td>
-<<<<<<< HEAD
                     <td className="tableData">
-=======
-                    <td className="px-6 py-4 whitespace-nowrap">
->>>>>>> 4176ce8 (test)
                       <button
                         onClick={(e) => shfaqAplikantPopup(e, sh)}
                         className="text-sm text-indigo-600 hover:text-indigo-900 font-medium"
@@ -411,12 +402,8 @@ function MenaxhoShpalljet() {
                         {sh.numriAplikimeve || 0} aplikant
                       </button>
                     </td>
-<<<<<<< HEAD
                     <td className="tableData text-right text-sm font-medium">
                       {/* 3 dots */}
-=======
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
->>>>>>> 4176ce8 (test)
                       <div className="relative">
                         <button
                           onClick={() =>
@@ -426,24 +413,14 @@ function MenaxhoShpalljet() {
                         >
                           <FontAwesomeIcon icon={faEllipsisVertical} />
                         </button>
-<<<<<<< HEAD
                         {shfaqMeny === sh._id && (
                           <div className="absolute right-6  top-0 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
-=======
-
-                        {shfaqMeny === sh._id && (
-                          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
->>>>>>> 4176ce8 (test)
                             <button
                               onClick={() => {
                                 setShpalljaKlikuar(sh);
                                 setShfaqMeny(null);
                               }}
-<<<<<<< HEAD
                               className="butonModifikimi"
-=======
-                              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2 rounded-t-lg"
->>>>>>> 4176ce8 (test)
                             >
                               <FontAwesomeIcon
                                 icon={faPencil}
@@ -453,11 +430,7 @@ function MenaxhoShpalljet() {
                             </button>
                             <button
                               onClick={() => fshijShpalljen(sh._id)}
-<<<<<<< HEAD
                               className="butonModifikimi text-red-600 "
-=======
-                              className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50 flex items-center space-x-2 rounded-b-lg"
->>>>>>> 4176ce8 (test)
                             >
                               <FontAwesomeIcon
                                 icon={faTrash}
@@ -475,10 +448,6 @@ function MenaxhoShpalljet() {
             </table>
           </div>
 
-<<<<<<< HEAD
-=======
-          {/* Mobile Cards */}
->>>>>>> 4176ce8 (test)
           <div className="lg:hidden divide-y divide-gray-200">
             {filteredData.map((sh) => (
               <div key={sh._id} className="p-4 hover:bg-gray-50">
@@ -532,11 +501,7 @@ function MenaxhoShpalljet() {
                             setShpalljaKlikuar(sh);
                             setShfaqMeny(null);
                           }}
-<<<<<<< HEAD
                           className="butonModifikimi"
-=======
-                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2 rounded-t-lg"
->>>>>>> 4176ce8 (test)
                         >
                           <FontAwesomeIcon
                             icon={faPencil}
@@ -546,11 +511,7 @@ function MenaxhoShpalljet() {
                         </button>
                         <button
                           onClick={() => fshijShpalljen(sh._id)}
-<<<<<<< HEAD
                           className="butonMofifikimi text-red-600"
-=======
-                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50 flex items-center space-x-2 rounded-b-lg"
->>>>>>> 4176ce8 (test)
                         >
                           <FontAwesomeIcon icon={faTrash} className="text-sm" />
                           <span>Fshij</span>
@@ -597,14 +558,7 @@ function MenaxhoShpalljet() {
               <form onSubmit={ruajNdryshimet} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-<<<<<<< HEAD
                     <label htmlFor="pozitaPunes" className="labelTabela">
-=======
-                    <label
-                      htmlFor="pozitaPunes"
-                      className="block text-sm font-medium text-gray-600 mb-2"
-                    >
->>>>>>> 4176ce8 (test)
                       Pozita e punes
                     </label>
                     <input
@@ -618,14 +572,7 @@ function MenaxhoShpalljet() {
                   </div>
 
                   <div>
-<<<<<<< HEAD
                     <label htmlFor="niveliPunes" className="labelTabela">
-=======
-                    <label
-                      htmlFor="niveliPunes"
-                      className="block text-sm font-medium text-gray-600 mb-2"
-                    >
->>>>>>> 4176ce8 (test)
                       Niveli i punes
                     </label>
                     <input
@@ -640,14 +587,7 @@ function MenaxhoShpalljet() {
                 </div>
 
                 <div>
-<<<<<<< HEAD
                   <label htmlFor="lokacioniPunes" className="labelTabela">
-=======
-                  <label
-                    htmlFor="lokacioniPunes"
-                    className="block text-sm font-medium text-gray-600 mb-2"
-                  >
->>>>>>> 4176ce8 (test)
                     Lokacioni i punes
                   </label>
                   <input
@@ -661,14 +601,7 @@ function MenaxhoShpalljet() {
                 </div>
 
                 <div>
-<<<<<<< HEAD
                   <label htmlFor="llojiPunes" className="labelTabela">
-=======
-                  <label
-                    htmlFor="llojiPunes"
-                    className="block text-sm font-medium text-gray-600 mb-2"
-                  >
->>>>>>> 4176ce8 (test)
                     Lloji i Punes
                   </label>
                   <input
@@ -682,14 +615,7 @@ function MenaxhoShpalljet() {
                 </div>
 
                 <div>
-<<<<<<< HEAD
                   <label htmlFor="pershkrimiPunes" className="labelTabela">
-=======
-                  <label
-                    htmlFor="pershkrimiPunes"
-                    className="block text-sm font-medium text-gray-600 mb-2"
-                  >
->>>>>>> 4176ce8 (test)
                     Pershkrimi i punes
                   </label>
                   <textarea
@@ -771,9 +697,24 @@ function MenaxhoShpalljet() {
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                         <div className="flex items-start gap-4">
                           <div className="relative">
-                            <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg group-hover:scale-110 transition-transform">
-                              {a.emriAplikantit?.charAt(0)}
-                              {a.mbiemriAplikantit?.charAt(0)}
+                            <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center font-bold text-xl shadow-lg group-hover:scale-110 transition-transform overflow-hidden">
+                              {fotoAplikanteve[a.emailAplikantit] ? (
+                                <img
+                                  src={fotoAplikanteve[a.emailAplikantit]}
+                                  alt={`${a.emriAplikantit} ${a.mbiemriAplikantit}`}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    e.target.style.display = "none";
+                                    const parent = e.target.parentElement;
+                                    parent.innerHTML = `<span class="text-blue-600">${a.emriAplikantit?.charAt(0)}${a.mbiemriAplikantit?.charAt(0)}</span>`;
+                                  }}
+                                />
+                              ) : (
+                                <span className="text-blue-600">
+                                  {a.emriAplikantit?.charAt(0)}
+                                  {a.mbiemriAplikantit?.charAt(0)}
+                                </span>
+                              )}
                             </div>
                           </div>
 
@@ -784,11 +725,7 @@ function MenaxhoShpalljet() {
                             <div className="flex items-center gap-2 text-gray-600">
                               <Mail
                                 size={16}
-<<<<<<< HEAD
                                 className="text-secondary shrink-0"
-=======
-                                className="text-[#3282B8] shrink-0"
->>>>>>> 4176ce8 (test)
                               />
                               <p className="text-sm truncate">
                                 {a.emailAplikantit}
@@ -818,15 +755,39 @@ function MenaxhoShpalljet() {
           <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] flex flex-col animate-in slide-in-from-bottom-4 duration-300">
             <div className="relative px-6 py-6 rounded-t-2xl">
               <div className="flex items-start justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold mb-1">
-                    {aplikimiKlikuar.emriAplikantit}{" "}
-                    {aplikimiKlikuar.mbiemriAplikantit}
-                  </h2>
-                  <p className="text-gray-400 text-sm">
-                    {aplikimiKlikuar.emailAplikantit}
-                  </p>
+                <div className="flex items-center gap-4">
+                  {/* Foto e aplikantit ne detaje */}
+                  <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center font-bold text-xl shadow-lg overflow-hidden flex-shrink-0">
+                    {fotoAplikanteve[aplikimiKlikuar.emailAplikantit] ? (
+                      <img
+                        src={fotoAplikanteve[aplikimiKlikuar.emailAplikantit]}
+                        alt={`${aplikimiKlikuar.emriAplikantit} ${aplikimiKlikuar.mbiemriAplikantit}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          const parent = e.target.parentElement;
+                          parent.innerHTML = `<span class="text-blue-600">${aplikimiKlikuar.emriAplikantit?.charAt(0)}${aplikimiKlikuar.mbiemriAplikantit?.charAt(0)}</span>`;
+                        }}
+                      />
+                    ) : (
+                      <span className="text-blue-600">
+                        {aplikimiKlikuar.emriAplikantit?.charAt(0)}
+                        {aplikimiKlikuar.mbiemriAplikantit?.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h2 className="text-2xl font-bold mb-1">
+                      {aplikimiKlikuar.emriAplikantit}{" "}
+                      {aplikimiKlikuar.mbiemriAplikantit}
+                    </h2>
+                    <p className="text-gray-400 text-sm">
+                      {aplikimiKlikuar.emailAplikantit}
+                    </p>
+                  </div>
                 </div>
+
                 <button
                   onClick={mbyllAplikimin}
                   className="cursor-pointer text-xl hover:text-gray-700"
@@ -841,44 +802,24 @@ function MenaxhoShpalljet() {
 
             <div className="p-6 space-y-4 overflow-y-auto flex-1 bg-gray-50">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-<<<<<<< HEAD
                 <div className="detajetAplikantit">
-=======
-                <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
->>>>>>> 4176ce8 (test)
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 flex items-center justify-center">
                       <User size={18} />
                     </div>
-<<<<<<< HEAD
                     <span className="spanAplikanti">Emri</span>
-=======
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                      Emri
-                    </span>
->>>>>>> 4176ce8 (test)
                   </div>
                   <p className="px-1.5 text-lg font-semibold text-gray-900">
                     {aplikimiKlikuar.emriAplikantit}
                   </p>
                 </div>
 
-<<<<<<< HEAD
                 <div className="detajetAplikantit">
-=======
-                <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
->>>>>>> 4176ce8 (test)
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 flex items-center justify-center">
                       <User size={18} />
                     </div>
-<<<<<<< HEAD
                     <span className="spanAplikanti">Mbiemri</span>
-=======
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                      Mbiemri
-                    </span>
->>>>>>> 4176ce8 (test)
                   </div>
                   <p className="px-1.5 text-lg font-semibold text-gray-900">
                     {aplikimiKlikuar.mbiemriAplikantit}
@@ -886,44 +827,24 @@ function MenaxhoShpalljet() {
                 </div>
               </div>
 
-<<<<<<< HEAD
               <div className="detajetAplikantit">
-=======
-              <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
->>>>>>> 4176ce8 (test)
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 flex items-center justify-center">
                     <Mail size={16} />
                   </div>
-<<<<<<< HEAD
                   <span className="spanAplikanti">Email</span>
-=======
-                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Email
-                  </span>
->>>>>>> 4176ce8 (test)
                 </div>
                 <p className="px-1.5 text-base font-medium text-gray-900">
                   {aplikimiKlikuar.emailAplikantit}
                 </p>
               </div>
 
-<<<<<<< HEAD
               <div className="detajetAplikantit">
-=======
-              <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
->>>>>>> 4176ce8 (test)
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 flex items-center justify-center">
                     <Phone size={16} />
                   </div>
-<<<<<<< HEAD
                   <span className="spanAplikanti">Nr-Tel</span>
-=======
-                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Nr-Tel
-                  </span>
->>>>>>> 4176ce8 (test)
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="px-1.5 text-base font-medium text-gray-900">
@@ -931,22 +852,12 @@ function MenaxhoShpalljet() {
                   </p>
                 </div>
               </div>
-<<<<<<< HEAD
               <div className="detajetAplikantit">
-=======
-              <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
->>>>>>> 4176ce8 (test)
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 flex items-center justify-center">
                     <BriefcaseBusiness size={16} />
                   </div>
-<<<<<<< HEAD
                   <span className="spanAplikanti">Eksperienca</span>
-=======
-                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Eksperienca
-                  </span>
->>>>>>> 4176ce8 (test)
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="px-1.5 text-base font-medium text-gray-900">
@@ -960,13 +871,7 @@ function MenaxhoShpalljet() {
                   <div className="w-8 h-8 flex items-center justify-center">
                     <FileText size={16} />
                   </div>
-<<<<<<< HEAD
                   <span className="spanAplikanti">Letra Motivuese</span>
-=======
-                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Letra Motivuese
-                  </span>
->>>>>>> 4176ce8 (test)
                 </div>
                 <div className="bg-linear-to-br from-gray-50 to-gray-100/50 rounded-lg p-4 max-h-48 overflow-y-auto border border-gray-200">
                   <p className="px-1.5 text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
@@ -974,7 +879,6 @@ function MenaxhoShpalljet() {
                   </p>
                 </div>
               </div>
-<<<<<<< HEAD
 
               <div className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
                 <div className="flex justify-between items-center bg-linear-to-br from-gray-50 to-gray-100/50 rounded-lg p-4 max-h-48 overflow-y-auto border border-gray-200">
@@ -991,24 +895,39 @@ function MenaxhoShpalljet() {
                       )
                     }
                   >
-                    Ngarko CV
+                    Shkarko CV
                   </button>
                 </div>
               </div>
-=======
->>>>>>> 4176ce8 (test)
+              <select
+                id="status"
+                onChange={(e) =>
+                  setAplikimiKlikuar({
+                    ...aplikimiKlikuar,
+                    status: e.target.value,
+                  })
+                }
+              >
+                <option value={`${aplikimiKlikuar.status}`} default hidden>
+                  {aplikimiKlikuar.status}
+                </option>
+                <option value="Pranuar">Prano</option>
+                <option value="Refuzuar">Refuzo</option>
+              </select>
             </div>
 
             <div className="px-6 py-4 bg-white/80 backdrop-blur-lg border-t border-gray-100 rounded-b-2xl flex justify-end items-center gap-3">
               <button
                 onClick={mbyllAplikimin}
-<<<<<<< HEAD
                 className="px-5 py-2.5 text-sm text-white font-semibold hover:text-black bg-primary hover:bg-white hover:border rounded-xl transition-all duration-200"
-=======
-                className="px-5 py-2.5 text-sm text-white font-semibold hover:text-black bg-[#0F4C75] hover:bg-white hover:border rounded-xl transition-all duration-200"
->>>>>>> 4176ce8 (test)
               >
                 Mbyll
+              </button>
+              <button
+                onClick={ruajNdryshimetAplikimit}
+                className="px-5 py-2.5 text-sm text-white font-semibold hover:text-black bg-primary hover:bg-white hover:border rounded-xl transition-all duration-200"
+              >
+                Ruaj Ndryshimet
               </button>
             </div>
           </div>
