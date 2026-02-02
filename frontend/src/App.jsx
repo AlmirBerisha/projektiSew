@@ -19,7 +19,7 @@ import Perdoruesi from "./PerdoruesiContext";
 import MenaxhoAplikimet from "./components/MenaxhoAplikimet";
 import PunetRuajtura from "./components/PunetRuajtura";
 import { useEffect, useState } from "react";
-import ProfiliVizitor from "./components/ProfiliVizitor";
+import ProfiliKompaniseVizitor from "./components/ProfiliKompaniseVizitor";
 import LlogaritPagen from "./components/LlogaritPagen";
 import ProfiliAplikantit from "./components/ProfiliAplikantit";
 
@@ -84,7 +84,7 @@ function App() {
               path="/profili/:id/punetRuajtura"
               element={<PunetRuajtura />}
             />
-            <Route path="/kompania/:id" element={<ProfiliVizitor />} />
+            <Route path="/kompania/:id" element={<ProfiliKompaniseVizitor />} />
             <Route path="/aplikanti/:id" element={<ProfiliAplikantit />} />
             <Route path="/llogaritpagen" element={<LlogaritPagen />} />
           </Routes>
