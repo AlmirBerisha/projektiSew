@@ -22,7 +22,7 @@ function ListaAplikanteve() {
     };
 
     fetchData();
-  }, [aplikantet]);
+  }, []);
 
   if (aplikantet.length === 0) {
     return <div>error</div>;
