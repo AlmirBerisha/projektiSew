@@ -4,6 +4,11 @@
 
 ---
 
+## Tech Stack
+<img src="https://skillicons.dev/icons?i=mongodb,express,react,nodejs" />
+
+
+
 ## Qëllimi i Platformës
 
 Qëllimi kryesor i **Punësohu** është:
