@@ -173,10 +173,10 @@ function ListaAplikanteve() {
         {/* Section Title */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-700 mb-3">
-            Gjen talentin që kërkon
+            Gjej talentin që kërkon
           </h2>
           <p className="text-lg text-gray-500 max-w-3xl mx-auto">
-            Shfle kandidatët dhe gjej aplikantin perfekt për pozicionin që po
+            Shfleto kandidatët dhe gjej aplikantin perfekt për pozicionin që po
             rekruton
           </p>
         </div>
