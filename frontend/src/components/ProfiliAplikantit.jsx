@@ -20,7 +20,7 @@ import { useAlert } from "../contexts/AlertContext";
 function ProfiliAplikantit() {
   const { perdoruesiData, setPerdoruesiData } = Perdoruesi.usePerdoruesi();
   const { id } = useParams();
-  const { showAlert, showConfirm, hideConfirm } = useAlert();
+  const { showAlert, showConfirm } = useAlert();
 
   const [shfaqLinkeForm, setShfaqLinkeForm] = useState(false);
   const [shfaqFormenEksperienca, setShfaqFormenEksperienca] = useState(false);
@@ -33,7 +33,6 @@ function ProfiliAplikantit() {
     mbiemri: "",
     profesioni: "",
     nrTelefonit: 0,
-    profesioni: "",
   });
   const [shfaqEditData, setShfaqEditData] = useState(false);
 
@@ -178,7 +177,7 @@ function ProfiliAplikantit() {
   const handleFshijFoto = async () => {
     showConfirm(
       "Jeni të sigurt që dëshironi të fshini foton?",
-      "Fshi Foto",
+      "Fshij Foton",
       async () => {
         try {
           const response = await axios.delete(
@@ -246,7 +245,7 @@ function ProfiliAplikantit() {
   const handleFshijLinkin = async (index) => {
     showConfirm(
       "Jeni të sigurt që dëshironi ta fshini këtë link?",
-      "Fshi Link",
+      "Fshij Linkun",
       async () => {
         try {
           const updatedLinks = (perdoruesiData?.linqet || []).filter(
@@ -359,7 +358,7 @@ function ProfiliAplikantit() {
   const handleFshijEksperiencen = async (index) => {
     showConfirm(
       "Jeni të sigurt që dëshironi ta fshini këtë eksperiencë?",
-      "Fshi Eksperiencë",
+      "Fshij Eksperiencën",
       async () => {
         try {
           const updatedExperiences = (
@@ -472,7 +471,7 @@ function ProfiliAplikantit() {
   const handleFshijEdukimin = async (index) => {
     showConfirm(
       "Jeni të sigurt që dëshironi ta fshini këtë edukim?",
-      "Fshi Edukim",
+      "Fshij Edukimin",
       async () => {
         try {
           const updatedEducation = (perdoruesiData?.edukimi || []).filter(
@@ -552,7 +551,7 @@ function ProfiliAplikantit() {
   const handleFshijProjektin = async (index) => {
     showConfirm(
       "Jeni të sigurt që dëshironi ta fshini këtë projekt?",
-      "Fshi Projekt",
+      "Fshij Projektin",
       async () => {
         try {
           const updatedProjects = (perdoruesiData?.projektet || []).filter(
@@ -613,7 +612,7 @@ function ProfiliAplikantit() {
   const handleFshijAftesine = async (index) => {
     showConfirm(
       "Jeni të sigurt që dëshironi ta fshini këtë aftësi?",
-      "Fshi Aftësi",
+      "Fshij Aftësinë",
       async () => {
         try {
           const updatedSkills = (perdoruesiData?.aftesite || []).filter(
@@ -741,7 +740,7 @@ function ProfiliAplikantit() {
                   <button
                     onClick={handleFshijFoto}
                     className="flex items-center justify-center w-8 h-8 rounded-lg bg-red-500 hover:bg-red-600 text-white shadow-md transition-all duration-200"
-                    title="Fshi foto"
+                    title="Fshij foton"
                   >
                     <Trash2 size={14} />
                   </button>

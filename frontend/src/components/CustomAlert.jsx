@@ -89,7 +89,7 @@ const CustomAlert = () => {
                 }}
                 className="flex-1 px-4 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 font-medium transition-all duration-200"
               >
-                Fshi
+                Fshij
               </button>
             </div>
           </div>
