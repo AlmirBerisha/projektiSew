@@ -340,10 +340,9 @@ function MenaxhoShpalljet() {
 
   const filteredData = sortimDates(
     shpalljaData.filter((sh) => {
-      const matchesSearch = sh.pozitaPunes
-        .toLowerCase()
-        .includes(kerko.toLowerCase());
-
+      const matchesSearch =
+        sh.pozitaPunes.toLowerCase().includes(kerko.toLowerCase()) ||
+        sh.kategoriaPunes.toLowerCase().includes(kerko.toLowerCase());
       const kaSkaduara = sh.status === "skaduar";
 
       if (filtrimiFaqes === "Aktive") {
