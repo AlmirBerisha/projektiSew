@@ -540,7 +540,10 @@ function MenaxhoShpalljet() {
                   // Add the return statement here
                   return (
                     <tr key={sh._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4">
+                      <td
+                        className="px-6 py-4 cursor-pointer"
+                        onClick={() => navigate(`/shpallja/${sh._id}`)}
+                      >
                         <div className="text-sm font-medium text-gray-900">
                           {sh.pozitaPunes}
                         </div>
